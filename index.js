@@ -97,3 +97,17 @@ app.get("/", (req, res) => {
 app.listen(3000, () => {
   console.log("MCP server running on port 3000");
 });
+
+app.post("/", async (req, res) => {
+  console.log("Incoming MCP request:", req.body);
+});
+
+const controller = new AbortController();
+const timeout = setTimeout(() => controller.abort(), 5000);
+
+const response = await fetch(url, {
+  headers: { "x-api-key": API_KEY },
+  signal: controller.signal
+});
+
+clearTimeout(timeout);
